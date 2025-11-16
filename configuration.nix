@@ -46,13 +46,22 @@
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
   };
+  programs.zsh = {
+    enable = true;
+    shellAliases = {
+      vim = "nvim";
+      switch = "nh os switch ~/nix --accept-flake-config";
+      gc = "git commit";
+      ga = "git add";
+      ls = "eza";
+    };
+  };
 
   users.users.puppy = {
     isNormalUser = true;
     description = "puppy";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    ];
+    shell = pkgs.zsh;
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -87,7 +96,7 @@
       };
     };
   };
-
+  
   services.tailscale.enable = true;
   system.stateVersion = "25.05";
 }

@@ -10,8 +10,10 @@
     source = ./dotfiles;
     recursive = true;
   };
-
+  home.enableNixpkgsReleaseCheck = false;
+  wayland.windowManager.hyprland.systemd.variables = ["--all"];
   home.packages = with pkgs; [
+    eza
     zip
     unzip
     ripgrep
@@ -37,5 +39,5 @@
     enable = true;
   };
 
-  home.stateVersion = "25.11";
+  home.stateVersion = "25.05";
 }
