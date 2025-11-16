@@ -1,8 +1,7 @@
 {
-  description = "Puppy's NixOS Flake";
+  description = "NixOS configuration";
 
   nixConfig = {
-    # override the default substituters
     substituters = [
       "https://cache.nixos.org"
       "https://nix-community.cachix.org"
@@ -15,18 +14,20 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    sysc-greet = {
-      url = "github:Nomadcxx/sysc-greet";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, nixpkgs, sysc-greet, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, ... }: {
       nixosConfigurations.crate = nixpkgs.lib.nixosSystem {
 	  modules = [ 
             ./configuration.nix
-            sysc-greet.nixosModules.default
+	    home-manager.nixosModules.home-manager
             {
-              nix.settings.trusted-users = [ "puppy" ];
+             home-manager.useGlobalPkgs = true;
+             home-manager.useUserPackages = true;
+             home-manager.users.puppy = import ./home.nix;
             }
           ];
       };
