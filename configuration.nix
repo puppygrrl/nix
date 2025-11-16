@@ -78,8 +78,6 @@
      librewolf
   ];
 
-  environment.variables.EDITOR = "vim";
-
   services.greetd = {
     enable = true;
     settings = {
@@ -89,5 +87,7 @@
       };
     };
   };
+
+  services.tailscale.enable = true;
   system.stateVersion = "25.05";
 }

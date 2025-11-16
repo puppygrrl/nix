@@ -1,8 +1,15 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
+  imports = [
+    inputs.walker.homeManagerModules.default
+  ];
   home.username = "puppy";
   home.homeDirectory = "/home/puppy";
+  home.file."${config.xdg.configHome}" = {
+    source = ./dotfiles;
+    recursive = true;
+  };
 
   home.packages = with pkgs; [
     zip
@@ -10,6 +17,9 @@
     ripgrep
     which
     btop
+    (discord.override {
+      withVencord = true;
+    })
   ];
 
   programs.git = {
@@ -18,5 +28,14 @@
     userEmail = "puppygirl@tuta.io";
   };
 
-  home.stateVersion = "25.05";
+  programs.walker = {
+    enable = true;
+    runAsService = true;
+  };
+
+  programs.neovim = {
+    enable = true;
+  };
+
+  home.stateVersion = "25.11";
 }
