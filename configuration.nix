@@ -13,8 +13,23 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  programs.virt-manager.enable = true;
+
+  users.groups.libvirtd.members = ["puppy"];
+
+  virtualisation.libvirtd.enable = true;
+
+  virtualisation.spiceUSBRedirection.enable = true;
+  virtualisation.libvirtd.qemu.swtpm.enable = true;
+
   networking.hostName = "crate"; 
   networking.networkmanager.enable = true;
+  networking.firewall = {
+    enable = true;
+    trustedInterfaces = [ "tailscale0" ];
+    allowedUDPPorts = [ config.services.tailscale.port ];
+    allowedTCPPorts = [ 22 80 443 ];
+  };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -96,7 +111,19 @@
       };
     };
   };
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    localNetworkGameTransfers.openFirewall = true;
+  };
   
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+    useRoutingFeatures = "client";
+  };
+
   system.stateVersion = "25.05";
 }

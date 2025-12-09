@@ -1,1 +1,2 @@
 theme = Gruvbox Material Dark
+shell-integration-features = ssh-terminfo,ssh-env
